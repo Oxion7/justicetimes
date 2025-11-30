@@ -1,0 +1,7 @@
+@use '../../shared/auth-mixins' as auth;
+
+.auth-container {
+  @include auth.auth-container;
+  @include auth.auth-base-styles;
+  @include auth.auth-with-switch;
+}

@@ -1,0 +1,175 @@
+@use '../../shared/mixins' as *;
+@use '../../shared/colors' as *;
+@use '../../shared/fonts' as *;
+
+.profile-wrapper {
+  max-width: 69em;
+  margin: 0 auto;
+  padding: 3.5em 1.5em;
+
+  .profile-title {
+    font-size: 3.5em;
+    font-weight: 700;
+    margin-bottom: 2em;
+    font-family: $font-playfair-display;
+  }
+
+  .profile-grid {
+    display: grid;
+    grid-template-columns: 346px 1fr;
+    gap: 5em;
+  }
+
+  .profile-left {
+    .double-border-avatar {
+      border: 10px solid #FBFBFB;
+      .avatar-card {
+        padding: 58px 90px;
+        text-align: center;
+        background: #FBFBFB;
+        border: 1px solid #F2F2F2;
+        display: flex;
+        flex-direction: column;
+
+
+        .avatar-preview {
+          width: 7.5em;
+          height: 7.5em;
+          border-radius: 50%;
+          overflow: hidden;
+          margin: 0 auto 1.25em auto;
+          background: #ddd;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        .avatar-placeholder {
+          width: 7.5em;
+          height: 7.5em;
+          border-radius: 50%;
+          background: #ddd;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 2.375em;
+          font-weight: 600;
+          color: #555;
+          margin: 0 auto 1.25em auto;
+        }
+
+        .photo-actions {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.75em;
+
+          .change-photo-btn {
+            @include button-solid-light;
+            background: #FBFBFB;
+            max-width: 100%;
+            white-space: nowrap;
+          }
+
+          .delete-photo-btn {
+            background: #FBFBFB;
+            cursor: pointer;
+            font-family: $font-ibm-plex-sans;
+            font-size: 1em;
+            width: 100%;
+            border: none;
+            color: $main-gray;
+            text-decoration: underline solid $main-gray;
+            text-underline-offset: 0.5em;
+          }
+        }
+      }
+    }
+  }
+
+  .profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    .name-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5em;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.375em;
+
+      .form-label {
+        font-size: 0.875em;
+        color: #444;
+        font-weight: 500;
+      }
+
+      .form-input,
+      .form-textarea {
+        border: 0.0625em solid #ddd;
+        padding: 0.625em 0.75em;
+        font-size: 0.9375em;
+        background: #fff;
+        transition: border-color 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: #000;
+        }
+      }
+
+      .form-textarea {
+        resize: vertical;
+        min-height: 6.875em;
+      }
+    }
+
+    .separator {
+      width: 100%;
+      height: 0.0625em;
+      background: #eee;
+    }
+
+    .save-button {
+      @include button-solid-dark;
+      max-width: 14em;
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      &:hover:not(:disabled) {
+        opacity: 0.85;
+      }
+    }
+  }
+}
+
+@media (max-width: 56.25em) {
+  .profile-wrapper {
+    padding: 2.5em 1em;
+
+    .profile-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5em;
+    }
+
+    .profile-left {
+      display: flex;
+      justify-content: center;
+    }
+
+    .name-fields {
+      grid-template-columns: 1fr !important;
+    }
+  }
+}

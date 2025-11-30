@@ -33,3 +33,28 @@ export const isTokenExpired = (token: string): boolean => {
   const currentTime = Date.now() / 1000;
   return decoded.exp < currentTime;
 };
+export const generateToken = (userId: number, email: string, name: string): string => {
+  const header = {
+    alg: 'HS256',
+    typ: 'JWT'
+  };
+
+  const payload = {
+    sub: email,
+    id: userId.toString(),
+    name: name,
+    role: 'author',
+    nbf: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // 24 hours
+    iat: Math.floor(Date.now() / 1000),
+    iss: 'justice-times-local',
+    aud: 'justice-times-app'
+  };
+
+  // Simple base64 encoding (not secure for production)
+  const encodedHeader = btoa(JSON.stringify(header));
+  const encodedPayload = btoa(JSON.stringify(payload));
+  const signature = btoa('local-signature-demo'); // Mock signature
+
+  return `${encodedHeader}.${encodedPayload}.${signature}`;
+};

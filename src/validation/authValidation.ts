@@ -14,10 +14,10 @@ export const loginSchema = yup.object({
 export const registerSchema = yup.object({
   firstName: yup
     .string()
-    .required('First name is required'),
+    .required('Please enter a first name.'),
   lastName: yup
     .string()
-    .required('Last name is required'),
+    .required('Please enter a last name.'),
   email: yup
     .string()
     .email('Please enter a valid email address')
@@ -25,7 +25,7 @@ export const registerSchema = yup.object({
   password: yup
     .string()
     .min(6, 'Password must be at least 6 characters')
-    .required('Password is required'),
+    .required('Please enter a password.'),
   passwordStatement: yup
     .string()
     .oneOf([yup.ref('password')], 'Passwords must match')

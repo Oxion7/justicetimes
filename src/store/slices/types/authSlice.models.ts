@@ -1,23 +1,24 @@
-import { Author } from "../../../api/authAPI/authAPI.models";
-
-export type AuthState = {
-  user: null | {
-    email: string;
-    name: string;
-    authorId: number;
-  };
-  token: string | null;
-  expiresAt: string | null;
-  isLoading: boolean;
-  error: string | null;
-  currentAuthor: Author | null;
-}
-export type LoginCredentials = {
+export type User = {
+  id: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
+  createdAt: string;
+  description: string | null;
+  avatar: string | null;
 }
 
-export type RegisterData = {
+export type AuthState = {
+  user: User | null;
+  token: string | null;
+  isLoading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+  users: User[];
+}
+
+export type RegisterPayload = {
   firstName: string;
   lastName: string;
   email: string;
