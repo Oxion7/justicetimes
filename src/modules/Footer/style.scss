@@ -46,9 +46,11 @@
         background: $main-gray;
         color: $text-gray;
       }
+
       .login-button {
         @include button-solid-dark;
       }
+
       .logout-button, .signin-button {
         @include button-solid-dark;
         border: 1px solid white;

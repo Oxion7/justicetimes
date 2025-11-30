@@ -2,7 +2,7 @@ import ReactDOM from "react-dom/client";
 import React from "react";
 import { App } from "./modules/App";
 import { BrowserRouter as Router } from "react-router-dom";
-import "./style.scss"
+import "./style.scss";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement,
@@ -13,5 +13,5 @@ root.render(
     <Router>
       <App />
     </Router>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

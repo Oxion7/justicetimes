@@ -3,14 +3,16 @@ import { User } from "../store/slices/types/authSlice.models";
 
 // User management
 export const getStoredUsers = (): any[] => {
-  if (typeof window === 'undefined') return [];
+  if (typeof window === "undefined") return [];
   const users = localStorage.getItem(STORAGE_KEYS.USERS);
   return users ? JSON.parse(users) : [];
 };
 
 export const saveUser = (userData: any) => {
   const users = getStoredUsers();
-  const existingUserIndex = users.findIndex(user => user.email === userData.email);
+  const existingUserIndex = users.findIndex(
+    (user) => user.email === userData.email,
+  );
 
   if (existingUserIndex !== -1) {
     users[existingUserIndex] = userData;
@@ -24,11 +26,11 @@ export const saveUser = (userData: any) => {
 
 export const getUserByEmail = (email: string): User | null => {
   const users = getStoredUsers();
-  return users.find(user => user.email === email);
+  return users.find((user) => user.email === email);
 };
 export const getUserById = (userId: string): User | null => {
   const users = getStoredUsers();
-  return users.find(user => user.id === userId) || null;
+  return users.find((user) => user.id === userId) || null;
 };
 
 export const getUserAvatar = (user: User | null): string | undefined => {
@@ -42,7 +44,7 @@ export const getUserFullName = (user: User | null): string => {
 
 // Token management
 export const getStoredToken = (): string | null => {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
   return localStorage.getItem(STORAGE_KEYS.TOKEN);
 };
 
@@ -56,7 +58,7 @@ export const removeStoredToken = () => {
 
 // Token expiration
 export const getStoredTokenExpiresAt = (): string | null => {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
   return localStorage.getItem(STORAGE_KEYS.TOKEN_EXPIRES_AT);
 };
 
@@ -70,7 +72,7 @@ export const removeStoredTokenExpiresAt = () => {
 
 // Current user management
 export const getStoredCurrentUser = (): any => {
-  if (typeof window === 'undefined') return null;
+  if (typeof window === "undefined") return null;
   const user = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
   return user ? JSON.parse(user) : null;
 };
@@ -100,12 +102,16 @@ export const isTokenExpired = (): boolean => {
 
 // Generate mock token
 export const generateToken = (): string => {
-  return 'mock_token_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
+  return (
+    "mock_token_" +
+    Math.random().toString(36).substring(2) +
+    Date.now().toString(36)
+  );
 };
 //Update stored user
 export const updateStoredUser = (updatedUser: any) => {
   const users = getStoredUsers();
-  const userIndex = users.findIndex(user => user.id === updatedUser.id);
+  const userIndex = users.findIndex((user) => user.id === updatedUser.id);
 
   if (userIndex !== -1) {
     users[userIndex] = updatedUser;

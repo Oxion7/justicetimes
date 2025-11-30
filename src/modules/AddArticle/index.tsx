@@ -55,7 +55,7 @@ const AddArticle: React.FC = () => {
       }),
       Underline,
       TextAlign.configure({
-        types: ['heading', 'paragraph'],
+        types: ["heading", "paragraph"],
       }),
       Superscript,
       Subscript,
@@ -65,7 +65,7 @@ const AddArticle: React.FC = () => {
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'embedded-image',
+          class: "embedded-image",
         },
         allowBase64: true,
       }),
@@ -78,26 +78,26 @@ const AddArticle: React.FC = () => {
       // md shortcuts for headings
       transformPastedText(text) {
         return text
-          .replace(/^### (.*$)/gim, '<h3>$1</h3>')
-          .replace(/^## (.*$)/gim, '<h2>$1</h2>')
-          .replace(/^# (.*$)/gim, '<h1>$1</h1>');
+          .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+          .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+          .replace(/^# (.*$)/gim, "<h1>$1</h1>");
       },
       handleKeyDown: (view, event) => {
         if (event.ctrlKey || event.metaKey) {
           switch (event.key) {
-            case '1':
+            case "1":
               event.preventDefault();
               editor?.chain().focus().toggleHeading({ level: 1 }).run();
               return true;
-            case '2':
+            case "2":
               event.preventDefault();
               editor?.chain().focus().toggleHeading({ level: 2 }).run();
               return true;
-            case '3':
+            case "3":
               event.preventDefault();
               editor?.chain().focus().toggleHeading({ level: 3 }).run();
               return true;
-            case '0':
+            case "0":
               event.preventDefault();
               editor?.chain().focus().setParagraph().run();
               return true;
@@ -108,7 +108,7 @@ const AddArticle: React.FC = () => {
       handlePaste: (view, event) => {
         const items = Array.from(event.clipboardData?.items || []);
 
-        const imageItem = items.find(item => item.type.startsWith('image'));
+        const imageItem = items.find((item) => item.type.startsWith("image"));
 
         if (imageItem) {
           event.preventDefault();
@@ -122,8 +122,8 @@ const AddArticle: React.FC = () => {
                   view.state.tr.replaceSelectionWith(
                     view.state.schema.nodes.image.create({
                       src: base64,
-                    })
-                  )
+                    }),
+                  ),
                 );
               }
             };
@@ -136,7 +136,7 @@ const AddArticle: React.FC = () => {
       handleDrop: (view, event) => {
         const items = Array.from(event.dataTransfer?.items || []);
 
-        const imageItem = items.find(item => item.type.startsWith('image'));
+        const imageItem = items.find((item) => item.type.startsWith("image"));
 
         if (imageItem) {
           event.preventDefault();
@@ -157,8 +157,8 @@ const AddArticle: React.FC = () => {
                       coordinates.pos,
                       view.state.schema.nodes.image.create({
                         src: base64,
-                      })
-                    )
+                      }),
+                    ),
                   );
                 }
               }
@@ -184,18 +184,18 @@ const AddArticle: React.FC = () => {
   const toggleUnderline = () => editor?.chain().focus().toggleUnderline().run();
   const toggleStrike = () => editor?.chain().focus().toggleStrike().run();
   const toggleCodeBlock = () => editor?.chain().focus().toggleCodeBlock().run();
-  const toggleSuperscript = () => editor?.chain().focus().toggleSuperscript().run();
+  const toggleSuperscript = () =>
+    editor?.chain().focus().toggleSuperscript().run();
   const toggleSubscript = () => editor?.chain().focus().toggleSubscript().run();
   const toggleBullet = () => editor?.chain().focus().toggleBulletList().run();
   const toggleOrdered = () => editor?.chain().focus().toggleOrderedList().run();
 
-
   const indent = () => {
-    editor?.chain().focus().sinkListItem('listItem').run();
+    editor?.chain().focus().sinkListItem("listItem").run();
   };
 
   const outdent = () => {
-    editor?.chain().focus().liftListItem('listItem').run();
+    editor?.chain().focus().liftListItem("listItem").run();
   };
 
   const setAlign = (align: "left" | "center" | "right" | "justify") => {
@@ -225,20 +225,20 @@ const AddArticle: React.FC = () => {
     try {
       let html = editor.getHTML();
 
-      const tempDiv = document.createElement('div');
+      const tempDiv = document.createElement("div");
       tempDiv.innerHTML = html;
       const images = tempDiv.querySelectorAll('img[src^="data:image/"]');
 
       for (const img of Array.from(images)) {
-        const src = img.getAttribute('src');
+        const src = img.getAttribute("src");
         if (src) {
           const sizeKB = getImageSizeInKB(src);
           if (sizeKB > 500) {
             try {
               const compressedSrc = await compressBase64Image(src, 800, 0.7);
-              img.setAttribute('src', compressedSrc);
+              img.setAttribute("src", compressedSrc);
             } catch (error) {
-              console.warn('Failed to compress image:', error);
+              console.warn("Failed to compress image:", error);
             }
           }
         }
@@ -274,7 +274,11 @@ const AddArticle: React.FC = () => {
       <h1 className="add-article-title">Add Article</h1>
 
       <form onSubmit={handleSubmit} className="article-form">
-        <div className="formatting-toolbar" role="toolbar" aria-label="Formatting toolbar">
+        <div
+          className="formatting-toolbar"
+          role="toolbar"
+          aria-label="Formatting toolbar"
+        >
           <div className="toolbar-left">
             <button
               type="button"

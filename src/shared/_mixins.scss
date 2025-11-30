@@ -24,11 +24,13 @@
   background-color: $main-gray;
   color: $white;
 }
+
 @mixin button-solid-light {
   background: white;
   @include button-base;
   border: 1px solid $main-gray;
 }
+
 /* auth */
 @mixin auth-container {
   display: flex;
@@ -89,7 +91,7 @@
 }
 
 @mixin input-error {
-  border-color:$error-red;
+  border-color: $error-red;
 
   &:focus {
     border-color: $error-red;

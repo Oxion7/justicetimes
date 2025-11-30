@@ -7,7 +7,7 @@ export type User = {
   createdAt: string;
   description: string | null;
   avatar: string | null;
-}
+};
 
 export type AuthState = {
   user: User | null;
@@ -16,11 +16,11 @@ export type AuthState = {
   error: string | null;
   isAuthenticated: boolean;
   users: User[];
-}
+};
 
 export type RegisterPayload = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-}
+};

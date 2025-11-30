@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllArticlesSorted } from "../../utils/ArticlesLocalStorage";
-import { useSearchParams, useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   setArticles,
@@ -9,8 +9,8 @@ import {
 } from "../../store/slices/articlesSlice";
 import { selectCurrentUser } from "../../store/selectors/authSelector";
 import {
+  selectUserArticles,
   selectUserArticlesPagination,
-  selectUserArticles
 } from "../../store/selectors/articlesSelector";
 import ArticlesList from "../ArticlesList";
 
@@ -21,19 +21,19 @@ const ProfileArticles = () => {
 
   const { userId } = useParams<{ userId: string }>();
 
-  const targetUserId = userId || '';
+  const targetUserId = userId || "";
 
   const [searchParams, setSearchParams] = useSearchParams();
   const pageParam = parseInt(searchParams.get("page") || "1", 10);
-  const [page, setPage] = useState(isNaN(pageParam) || pageParam < 1 ? 1 : pageParam);
-
-  const userArticlesPagination = useAppSelector(state =>
-    selectUserArticlesPagination(state, targetUserId, page)
+  const [page, setPage] = useState(
+    isNaN(pageParam) || pageParam < 1 ? 1 : pageParam,
   );
 
-  useAppSelector(state =>
-    selectUserArticles(state, targetUserId)
+  const userArticlesPagination = useAppSelector((state) =>
+    selectUserArticlesPagination(state, targetUserId, page),
   );
+
+  useAppSelector((state) => selectUserArticles(state, targetUserId));
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -74,7 +74,7 @@ const ProfileArticles = () => {
         title: "No articles yet",
         description: userId
           ? "This user hasn't written any articles yet."
-          : "Start writing your first article to share your thoughts with the community."
+          : "Start writing your first article to share your thoughts with the community.",
       }}
     />
   );

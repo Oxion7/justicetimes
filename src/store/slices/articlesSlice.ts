@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Article, ArticlesState } from "./types/ArticlesSlice.models";
 
-
 const initialState: ArticlesState = {
   articles: [],
   loading: false,
@@ -37,7 +36,7 @@ const articlesSlice = createSlice({
 
     // Update existing article
     updateArticle: (state, action: PayloadAction<Article>) => {
-      const index = state.articles.findIndex(a => a.id === action.payload.id);
+      const index = state.articles.findIndex((a) => a.id === action.payload.id);
       if (index !== -1) {
         state.articles[index] = action.payload;
       }
@@ -45,21 +44,23 @@ const articlesSlice = createSlice({
 
     // Delete article
     deleteArticle: (state, action: PayloadAction<string>) => {
-      state.articles = state.articles.filter(a => a.id !== action.payload);
+      state.articles = state.articles.filter((a) => a.id !== action.payload);
     },
 
     // Get articles by author
-    setAuthorArticles: (state, action: PayloadAction<{ authorId: string; articles: Article[] }>) => {
+    setAuthorArticles: (
+      state,
+      action: PayloadAction<{ authorId: string; articles: Article[] }>,
+    ) => {
       state.loading = false;
       state.error = null;
     },
     incrementViews: (state, action: PayloadAction<string>) => {
-      const article = state.articles.find(a => a.id === action.payload);
+      const article = state.articles.find((a) => a.id === action.payload);
       if (article) {
         article.views = (article.views ?? 0) + 1;
       }
     },
-
   },
 });
 

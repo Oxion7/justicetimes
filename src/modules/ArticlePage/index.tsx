@@ -2,17 +2,16 @@ import React from "react";
 import "./style.scss";
 import { ArticleWithUserData } from "../../store/slices/types/ArticlesSlice.models";
 import { formatDate } from "../../utils/dateUtils";
-import eyeIcon from "../../assets/eyeIcon.png"
+import eyeIcon from "../../assets/eyeIcon.png";
 
 type ArticlePageProps = {
   article: ArticleWithUserData;
-}
+};
 
-const ArticlePage: React.FC<ArticlePageProps> = ( {article}) => {
+const ArticlePage: React.FC<ArticlePageProps> = ({ article }) => {
   return (
     <div className="article-page-container">
       <div className="article-main-layout">
-
         <div className="back-link">
           <a href="/all-articles">All articles</a>
         </div>
@@ -31,16 +30,24 @@ const ArticlePage: React.FC<ArticlePageProps> = ( {article}) => {
           <div className="article-footer">
             <div className="author-block">
               {article.authorAvatar ? (
-                <img className="avatar" src={article.authorAvatar} alt={article.authorName} />
+                <img
+                  className="avatar"
+                  src={article.authorAvatar}
+                  alt={article.authorName}
+                />
               ) : (
-                <div className="avatar placeholder">{article.authorName[0]}</div>
+                <div className="avatar placeholder">
+                  {article.authorName[0]}
+                </div>
               )}
 
               <div className="meta">
                 <div className="name">{article.authorName}</div>
-                <div className="sub">{formatDate(article.createdAt)} · {article.readTime} min read</div>
+                <div className="sub">
+                  {formatDate(article.createdAt)} · {article.readTime} min read
+                </div>
                 <span className="article-views">
-                  <img src={eyeIcon}/>
+                  <img src={eyeIcon} />
                   {article.views ?? 0}
                 </span>
               </div>

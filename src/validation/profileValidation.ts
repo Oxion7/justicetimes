@@ -1,5 +1,13 @@
 import * as yup from "yup";
-export const SUPPORTED_FORMATS = ["image/jpeg", "image/jpg", "image/png", "image/gif", "image/webp", "image/svg+xml"];
+
+export const SUPPORTED_FORMATS = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/gif",
+  "image/webp",
+  "image/svg+xml",
+];
 
 export const profileSchema = yup.object({
   firstName: yup
@@ -16,9 +24,7 @@ export const profileSchema = yup.object({
     .string()
     .max(500, "Description must be less than 500 characters")
     .nullable(),
-  avatar: yup
-    .mixed<string | null>()
-    .nullable()
+  avatar: yup.mixed<string | null>().nullable(),
 });
 
 export type ProfileFormData = {

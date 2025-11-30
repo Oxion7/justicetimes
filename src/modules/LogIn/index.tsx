@@ -4,8 +4,12 @@ import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { LoginFormData, loginSchema } from "../../validation/authValidation";
 import { ErrorMessage, Field, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import "./style.scss"
-import { selectAuthError, selectAuthLoading, selectIsAuthenticated } from "../../store/selectors/authSelector";
+import "./style.scss";
+import {
+  selectAuthError,
+  selectAuthLoading,
+  selectIsAuthenticated,
+} from "../../store/selectors/authSelector";
 
 const LoginPage: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -40,9 +44,15 @@ const LoginPage: React.FC = () => {
                 <Field
                   type="email"
                   name="email"
-                  className={errors.email && touched.email ? "input-error" : "input"}
+                  className={
+                    errors.email && touched.email ? "input-error" : "input"
+                  }
                 />
-                <ErrorMessage name="email" component="div" className="error-message" />
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className="error-message"
+                />
               </div>
 
               <div className="form-group">
@@ -51,18 +61,30 @@ const LoginPage: React.FC = () => {
                   maxLength="16"
                   type="password"
                   name="password"
-                  className={errors.password && touched.password ? "input-error" : "input"}
+                  className={
+                    errors.password && touched.password
+                      ? "input-error"
+                      : "input"
+                  }
                 />
-                <ErrorMessage name="password" component="div" className="error-message" />
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className="error-message"
+                />
               </div>
 
-              <button type="submit" className="submit-button" disabled={isLoading}>
+              <button
+                type="submit"
+                className="submit-button"
+                disabled={isLoading}
+              >
                 {isLoading ? "Logging in..." : "Log in"}
               </button>
 
               <div className="auth-switch">
                 <p>
-                  Don’t have a Times account? {" "}
+                  Don’t have a Times account?{" "}
                   <Link to="/signin" className="auth-link">
                     Create one
                   </Link>

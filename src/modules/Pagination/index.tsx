@@ -1,12 +1,12 @@
-import React from 'react';
-import './style.scss';
+import React from "react";
+import "./style.scss";
 
 const Pagination: React.FC<PaginationProps> = ({
-                                                 currentPage,
-                                                 totalPages,
-                                                 onPageChange,
-                                                 className = '',
-                                               }) => {
+  currentPage,
+  totalPages,
+  onPageChange,
+  className = "",
+}) => {
   if (totalPages <= 1) return null;
 
   return (

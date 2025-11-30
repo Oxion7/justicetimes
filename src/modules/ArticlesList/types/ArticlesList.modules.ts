@@ -13,4 +13,4 @@ export type ArticlesListProps = {
     description: string;
   };
   showPagination?: boolean;
-}
+};

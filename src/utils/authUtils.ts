@@ -5,7 +5,7 @@ export const checkIsLoggedIn = (): boolean => {
   const token = getStoredToken();
   const user = getStoredCurrentUser();
 
-  console.log('checkIsLoggedIn - token:', token, 'user:', user);
+  console.log("checkIsLoggedIn - token:", token, "user:", user);
 
   if (!token || !user) {
     return false;
@@ -16,7 +16,7 @@ export const checkIsLoggedIn = (): boolean => {
       return false;
     }
   } catch (error) {
-    console.error('Error checking token expiration:', error);
+    console.error("Error checking token expiration:", error);
     return false;
   }
 

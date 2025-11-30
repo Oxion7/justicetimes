@@ -1,9 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { updateUserProfile } from "../../store/slices/authSlice";
 import { withAuth } from "../../HOCs/withAuth";
 import { ErrorMessage, Field, Form, Formik } from "formik";
-import { profileSchema, ProfileFormData, SUPPORTED_FORMATS } from "../../validation/profileValidation";
+import {
+  ProfileFormData,
+  profileSchema,
+  SUPPORTED_FORMATS,
+} from "../../validation/profileValidation";
 import "./style.scss";
 import { MAX_FILE_SIZE } from "./const/Profile";
 import fallbackImg from "../../assets/noPhoto.png";
@@ -12,7 +16,9 @@ const Profile: React.FC = () => {
   const dispatch = useAppDispatch();
   const { user, isLoading } = useAppSelector((state) => state.auth);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(user?.avatar || null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    user?.avatar || null,
+  );
 
   const initialValues: ProfileFormData = {
     firstName: user?.firstName || "",
@@ -32,7 +38,7 @@ const Profile: React.FC = () => {
   const handleImageChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     setFieldValue: (field: string, value: string | null) => void,
-    setFieldError: (field: string, value: string | undefined) => void
+    setFieldError: (field: string, value: string | undefined) => void,
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -40,7 +46,10 @@ const Profile: React.FC = () => {
     setFieldError("avatar", undefined);
 
     if (!SUPPORTED_FORMATS.includes(file.type)) {
-      setFieldError("avatar", "Please select a valid image file (JPEG, PNG, GIF, WebP, SVG)");
+      setFieldError(
+        "avatar",
+        "Please select a valid image file (JPEG, PNG, GIF, WebP, SVG)",
+      );
       return;
     }
 
@@ -56,7 +65,10 @@ const Profile: React.FC = () => {
       setPreviewUrl(result);
     };
     reader.onerror = () => {
-      setFieldError("avatar", "Failed to read the image file. Please try again.");
+      setFieldError(
+        "avatar",
+        "Failed to read the image file. Please try again.",
+      );
       setFieldValue("avatar", null);
       setPreviewUrl(null);
     };
@@ -65,7 +77,7 @@ const Profile: React.FC = () => {
 
   const handleDeletePhoto = (
     setFieldValue: (field: string, value: string | null) => void,
-    setFieldError: (field: string, value: string | undefined) => void
+    setFieldError: (field: string, value: string | undefined) => void,
   ) => {
     setFieldValue("avatar", null);
     setPreviewUrl(null);
@@ -83,7 +95,15 @@ const Profile: React.FC = () => {
         onSubmit={handleSubmit}
         enableReinitialize
       >
-        {({ values, errors, touched, setFieldValue, setFieldError, dirty, isValid }) => {
+        {({
+          values,
+          errors,
+          touched,
+          setFieldValue,
+          setFieldError,
+          dirty,
+          isValid,
+        }) => {
           const displayImage = previewUrl || values.avatar;
           const hasPhoto = !!displayImage;
 
@@ -109,19 +129,27 @@ const Profile: React.FC = () => {
                         <button
                           type="button"
                           className="delete-photo-btn"
-                          onClick={() => handleDeletePhoto(setFieldValue, setFieldError)}
+                          onClick={() =>
+                            handleDeletePhoto(setFieldValue, setFieldError)
+                          }
                         >
                           Delete photo
                         </button>
                       )}
                     </div>
 
-                    <ErrorMessage name="avatar" component="div" className="image-error" />
+                    <ErrorMessage
+                      name="avatar"
+                      component="div"
+                      className="image-error"
+                    />
 
                     <input
                       type="file"
                       ref={fileInputRef}
-                      onChange={(e) => handleImageChange(e, setFieldValue, setFieldError)}
+                      onChange={(e) =>
+                        handleImageChange(e, setFieldValue, setFieldError)
+                      }
                       accept="image/*"
                       style={{ display: "none" }}
                     />
@@ -132,30 +160,44 @@ const Profile: React.FC = () => {
               <div className="profile-form">
                 <div className="name-fields">
                   <div className="form-group">
-                    <label htmlFor="firstName" className="form-label">First name</label>
+                    <label htmlFor="firstName" className="form-label">
+                      First name
+                    </label>
                     <Field
                       id="firstName"
                       name="firstName"
                       className={`form-input ${errors.firstName && touched.firstName ? "input-error" : ""}`}
                       type="text"
                     />
-                    <ErrorMessage name="firstName" component="div" className="error-message" />
+                    <ErrorMessage
+                      name="firstName"
+                      component="div"
+                      className="error-message"
+                    />
                   </div>
 
                   <div className="form-group">
-                    <label htmlFor="lastName" className="form-label">Last name</label>
+                    <label htmlFor="lastName" className="form-label">
+                      Last name
+                    </label>
                     <Field
                       id="lastName"
                       name="lastName"
                       className={`form-input ${errors.lastName && touched.lastName ? "input-error" : ""}`}
                       type="text"
                     />
-                    <ErrorMessage name="lastName" component="div" className="error-message" />
+                    <ErrorMessage
+                      name="lastName"
+                      component="div"
+                      className="error-message"
+                    />
                   </div>
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="description" className="form-label">Description</label>
+                  <label htmlFor="description" className="form-label">
+                    Description
+                  </label>
                   <Field
                     as="textarea"
                     id="description"
@@ -163,7 +205,11 @@ const Profile: React.FC = () => {
                     className={`form-textarea ${errors.description && touched.description ? "input-error" : ""}`}
                     rows={4}
                   />
-                  <ErrorMessage name="description" component="div" className="error-message" />
+                  <ErrorMessage
+                    name="description"
+                    component="div"
+                    className="error-message"
+                  />
                 </div>
 
                 <button

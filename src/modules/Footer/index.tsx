@@ -65,8 +65,12 @@ export const Footer: React.FC<any> = ({ isLoggedIn }) => {
           </nav>
         </div>
         <div className="footer-bottom">
-          <p className="copyright">&copy; 2021 Justice-it. All rights reserved.</p>
-          <p className="copyright">&copy; 2021 Justice-it. All rights reserved.</p>
+          <p className="copyright">
+            &copy; 2021 Justice-it. All rights reserved.
+          </p>
+          <p className="copyright">
+            &copy; 2021 Justice-it. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>

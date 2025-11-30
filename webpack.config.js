@@ -1,64 +1,60 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/index.tsx',
+  entry: "./src/index.tsx",
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.[contenthash].js',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.[contenthash].js",
     clean: true,
-    publicPath: '/',
+    publicPath: "/",
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', '.jsx'],
+    extensions: [".tsx", ".ts", ".js", ".jsx"],
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/,
         exclude: /node_modules/,
-        use: 'babel-loader',
+        use: "babel-loader",
       },
       {
         test: /\.module\.scss$/,
         use: [
-          'style-loader',
+          "style-loader",
           {
-            loader: 'css-loader',
+            loader: "css-loader",
             options: {
               modules: {
-                localIdentName: '[name]__[local]--[hash:base64:5]',
+                localIdentName: "[name]__[local]--[hash:base64:5]",
               },
             },
           },
-          'sass-loader',
+          "sass-loader",
         ],
       },
       {
         test: /\.scss$/,
         exclude: /\.module\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-        ],
+        use: ["style-loader", "css-loader", "sass-loader"],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
       },
       {
         test: /\.svg$/,
-        use: ['@svgr/webpack'],
+        use: ["@svgr/webpack"],
       },
       {
         test: /\.(png|jpe?g|gif)$/i,
         use: [
           {
-            loader: 'file-loader',
+            loader: "file-loader",
             options: {
-              name: '[name].[contenthash].[ext]',
-              outputPath: 'images/',
+              name: "[name].[contenthash].[ext]",
+              outputPath: "images/",
             },
           },
         ],
@@ -67,7 +63,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: "./public/index.html",
     }),
   ],
   devServer: {

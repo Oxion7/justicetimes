@@ -10,7 +10,6 @@ import LogIn from "../LogIn";
 import Profile from "../Profile";
 import AddArticle from "../AddArticle";
 import ProfileArticles from "../ProfileArticles";
-import ArticlePage from "../ArticlePage";
 import AllArticles from "../AllArticles";
 import ArticlePageContainer from "../ArticlePage/ArticlePageContainer";
 
@@ -24,14 +23,14 @@ export const App: React.FC<any> = () => {
             <Route path="/" element={<AllArticles />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/login" element={<LogIn />} />
-            <Route
-              path="/article/:id"
-              element={<ArticlePageContainer />}
-            />
+            <Route path="/article/:id" element={<ArticlePageContainer />} />
             <Route path="/all-articles" element={<AllArticles />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/add-article" element={<AddArticle />} />
-            <Route path="/profile/:userId/articles" element={<ProfileArticles />} />
+            <Route
+              path="/profile/:userId/articles"
+              element={<ProfileArticles />}
+            />
           </Routes>
         </div>
         <FooterContainer />
