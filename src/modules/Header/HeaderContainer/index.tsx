@@ -9,7 +9,6 @@ export const HeaderContainer: React.FC = () => {
   );
 
   const isLoggedIn = useMemo(() => {
-    if (isAuthenticated && user && token) return true;
     return checkIsLoggedIn();
   }, [isAuthenticated, user, token]);
 

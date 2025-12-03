@@ -37,29 +37,11 @@ const articlesSlice = createSlice({
     // Update existing article
     updateArticle: (state, action: PayloadAction<Article>) => {
       const index = state.articles.findIndex((a) => a.id === action.payload.id);
-      if (index !== -1) {
-        state.articles[index] = action.payload;
-      }
-    },
-
-    // Delete article
-    deleteArticle: (state, action: PayloadAction<string>) => {
-      state.articles = state.articles.filter((a) => a.id !== action.payload);
-    },
-
-    // Get articles by author
-    setAuthorArticles: (
-      state,
-      action: PayloadAction<{ authorId: string; articles: Article[] }>,
-    ) => {
-      state.loading = false;
-      state.error = null;
+      if (index !== -1) state.articles[index] = action.payload;
     },
     incrementViews: (state, action: PayloadAction<string>) => {
       const article = state.articles.find((a) => a.id === action.payload);
-      if (article) {
-        article.views = (article.views ?? 0) + 1;
-      }
+      if (article) article.views = (article.views ?? 0) + 1;
     },
   },
 });
@@ -70,8 +52,6 @@ export const {
   setArticlesError,
   addArticle,
   updateArticle,
-  deleteArticle,
-  setAuthorArticles,
   incrementViews,
 } = articlesSlice.actions;
 

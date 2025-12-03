@@ -21,8 +21,6 @@ export const Footer: React.FC<any> = ({ isLoggedIn }) => {
 
   const myProfileUrl = user?.id ? `/profile/${user.id}/articles` : "/login";
 
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="footer">
       <div className="footer-container">

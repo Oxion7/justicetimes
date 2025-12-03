@@ -72,7 +72,6 @@ export const removeStoredTokenExpiresAt = () => {
 
 // Current user management
 export const getStoredCurrentUser = (): any => {
-  if (typeof window === "undefined") return null;
   const user = localStorage.getItem(STORAGE_KEYS.CURRENT_USER);
   return user ? JSON.parse(user) : null;
 };
@@ -120,7 +119,5 @@ export const updateStoredUser = (updatedUser: any) => {
 
   // Also update current user if it's the same user
   const currentUser = getStoredCurrentUser();
-  if (currentUser && currentUser.id === updatedUser.id) {
-    setStoredCurrentUser(updatedUser);
-  }
+  if (currentUser && currentUser.id === updatedUser.id) setStoredCurrentUser(updatedUser);
 };

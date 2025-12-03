@@ -1,4 +1,3 @@
-// store/slices/authSlice.ts
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { LoginFormData } from "../../validation/authValidation";
 import {
@@ -34,11 +33,8 @@ export const registerUser = createAsyncThunk(
   async (userData: RegisterPayload, { rejectWithValue }) => {
     try {
       const existingUser = getUserByEmail(userData.email);
-      if (existingUser) {
-        return rejectWithValue("User with this email already exists");
-      }
+      if (existingUser) return rejectWithValue("User with this email already exists");
 
-      // Create new user
       const newUser: User = {
         id: generateUserId(),
         firstName: userData.firstName,
@@ -51,7 +47,6 @@ export const registerUser = createAsyncThunk(
       };
 
       saveUser(newUser);
-      console.log("User saved to registered users list");
       const token = generateToken(
         parseInt(newUser.id),
         newUser.email,
@@ -70,13 +65,9 @@ export const loginUser = createAsyncThunk(
   async (credentials: LoginFormData, { rejectWithValue }) => {
     try {
       const user = getUserByEmail(credentials.email);
-      if (!user) {
-        return rejectWithValue("Invalid email or password");
-      }
+      if (!user) return rejectWithValue("Invalid email or password");
 
-      if (user.password !== credentials.password) {
-        return rejectWithValue("Invalid email or password");
-      }
+      if (user.password !== credentials.password) return rejectWithValue("Invalid email or password");
       const token = generateToken(
         parseInt(user.id),
         user.email,

@@ -125,7 +125,7 @@ const Profile: React.FC = () => {
                         Change photo
                       </button>
 
-                      {hasPhoto && ( // Only show delete button if there's a photo
+                      {hasPhoto && (
                         <button
                           type="button"
                           className="delete-photo-btn"

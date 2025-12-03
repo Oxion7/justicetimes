@@ -26,10 +26,8 @@ export const saveArticle = (article: Article): Article => {
     }
 
     localStorage.setItem(ARTICLES_STORAGE_KEY, JSON.stringify(articles));
-    console.log("ArticlePage saved:", article);
     return article;
   } catch (error) {
-    console.error("Error saving article:", error);
     throw error;
   }
 };
@@ -48,7 +46,7 @@ export const generateArticleId = (): string => {
 };
 export const getAllArticlesSorted = (): Article[] => {
   const articles = getStoredArticles();
-  // Sort by creation date, newest first
+  // Sort by creation date
   return articles.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );

@@ -24,20 +24,14 @@ export const selectArticlesWithUserData = createSelector(
 );
 
 export const selectPreparedArticles = createSelector(
-  [selectArticlesWithUserData],
-  (articlesWithUsers): ArticleWithUserData[] => {
+  [selectArticlesWithUserData], (articlesWithUsers): ArticleWithUserData[] => {
     return articlesWithUsers;
   },
 );
 
 export const selectHighlightedArticle = createSelector(
-  [selectPreparedArticles],
-  (preparedArticles): ArticleWithUserData | null => {
-    const highlighted = getHighlightedArticle(preparedArticles);
-    if (!highlighted) return null;
-    return highlighted;
-  },
-);
+  [selectPreparedArticles], (preparedArticles): ArticleWithUserData | null =>
+    getHighlightedArticle(preparedArticles) || null,);
 
 export const selectArticlesForPagination = createSelector(
   [selectPreparedArticles, selectHighlightedArticle],
@@ -53,9 +47,8 @@ export const selectPaginatedArticles = createSelector(
   (articlesForPagination, page): ArticleWithUserData[] => {
     const total = articlesForPagination.length;
 
-    // Pagination calc
-    let startIndex = page === 1 ? 0 : 6 + (page - 2) * 7;
-    let endIndex =
+    const startIndex = page === 1 ? 0 : 6 + (page - 2) * 7;
+    const endIndex =
       page === 1 ? Math.min(6, total) : Math.min(startIndex + 7, total);
 
     return articlesForPagination.slice(startIndex, endIndex);
@@ -66,6 +59,7 @@ export const selectTotalPages = createSelector(
   [selectArticlesForPagination],
   (articlesForPagination): number => {
     const total = articlesForPagination.length;
+
     return total <= 6 ? 1 : 1 + Math.ceil((total - 6) / 7);
   },
 );

@@ -1,13 +1,13 @@
 import { ArticleWithUserData } from "../store/slices/types/ArticlesSlice.models";
 
+const WEEK = 7 * 24 * 60 * 60 * 1000;
+
 export const getHighlightedArticle = (articles: ArticleWithUserData[]) => {
   if (articles.length === 0) return null;
   const now = Date.now();
-  const sevenDays = 7 * 24 * 60 * 60 * 1000;
-
   const recent = articles.filter((a) => {
     const ts = Date.parse(a.createdAt);
-    return !isNaN(ts) && now - ts <= sevenDays;
+    return !isNaN(ts) && now - ts <= WEEK;
   });
 
   const pickMostViewed = (arr: ArticleWithUserData[]) => {

@@ -6,10 +6,7 @@ export const withAuth = <P extends object>(Component: React.ComponentType<P>) =>
   return (props: P) => {
     const { isAuthenticated } = useAuth();
 
-    if (!isAuthenticated) {
-      return <LogIn />;
-    }
-
+    if (!isAuthenticated) return <LogIn />;
     return <Component {...props} />;
   };
 };

@@ -14,3 +14,7 @@ export type ArticlesListProps = {
   };
   showPagination?: boolean;
 };
+export type ArticleItemProps = {
+  article: ArticleWithUserData;
+  isHighlighted: boolean;
+}

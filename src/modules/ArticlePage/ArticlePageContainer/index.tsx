@@ -9,9 +9,7 @@ const ArticlePageContainer = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
   useEffect(() => {
-    if (id) {
-      dispatch(incrementViews(id));
-    }
+    if (id) dispatch(incrementViews(id));
   }, [id, dispatch]);
   const article = useAppSelector(state =>
     selectArticlesWithUserData(state).find(article => article.id === id)

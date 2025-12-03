@@ -13,13 +13,14 @@ import {
   selectPaginatedArticles,
   selectTotalPages
 } from "../../store/selectors/articlesSelector";
+import { DEFAULT_PAGE } from "./const/AllArticles";
 
 const AllArticles = () => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.articles);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const pageParam = parseInt(searchParams.get("page") || "1", 10);
+  const pageParam = parseInt(searchParams.get("page") || DEFAULT_PAGE, 10);
   const [page, setPage] = useState(isNaN(pageParam) || pageParam < 1 ? 1 : pageParam);
 
   const highlightedArticle = useAppSelector(selectHighlightedArticle);
