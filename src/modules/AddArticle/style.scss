@@ -1,0 +1,354 @@
+@use '../../shared/fonts' as *;
+@use '../../shared/mixins' as *;
+@use '../../shared/colors' as *;
+
+.add-article-content {
+  max-width: 1200px;
+  padding: 0 13em;
+  margin: auto;
+}
+
+.add-article-title {
+  font-size: 3em;
+  font-family: $font-playfair-display;
+  margin-bottom: 1em;
+  color: $main-gray;
+  font-weight: normal;
+}
+
+.article-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formatting-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8em 1.2em;
+  background: $light-gray;
+  margin-bottom: 1.5em;
+}
+
+.toolbar-left,
+.toolbar-right {
+  display: flex;
+  gap: 0.3em;
+}
+
+.formatting-toolbar button {
+  background: $white;
+  border: 1px solid $text-gray;
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.15s ease;
+
+  &:hover {
+    border-color: $main-gray;
+  }
+
+}
+
+.title-input {
+  padding: 0.8em 1.2em;
+  font-size: 1em;
+  font-family: $font-ibm-plex-sans;
+  border: 1px solid $text-gray;
+  margin-bottom: 1.5em;
+  background: $white;
+  outline: none;
+  color: $main-gray;
+
+  &::placeholder {
+    color: $text-gray;
+    font-weight: normal;
+  }
+
+  &:focus {
+    border-color: $main-gray;
+  }
+}
+
+.category-input {
+  padding: 0.8em 1.2em;
+  font-size: 1em;
+  font-family: $font-ibm-plex-sans;
+  border: 1px solid $text-gray;
+  margin-bottom: 1.5em;
+  background: $white;
+  outline: none;
+  color: $main-gray;
+
+  &::placeholder {
+    color: $text-gray;
+  }
+
+  &:focus {
+    border-color: $main-gray;
+  }
+}
+
+.editor-container {
+  position: relative;
+  margin-bottom: 1.5em;
+}
+
+.content-editor {
+  border: 1px solid $text-gray;
+  background: $white;
+  min-height: 21em;
+  padding: 1em;
+
+  .ProseMirror {
+    outline: none;
+    min-height: 19em;
+
+    p {
+      margin: 0.6em 0;
+      font-family: $font-ibm-plex-sans;
+      color: $main-gray;
+    }
+
+    ul, ol {
+      padding-left: 1.5em;
+    }
+
+    pre {
+      background: $light-gray;
+      padding: 1em;
+      border-radius: 4px;
+      overflow-x: auto;
+
+      code {
+        background: none;
+        padding: 0;
+        color: $main-gray;
+      }
+    }
+
+    code {
+      background: $light-gray;
+      padding: 0.2em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+      color: $main-gray;
+    }
+
+    blockquote {
+      border-left: 3px solid $text-gray;
+      padding-left: 0.8em;
+      color: $text-gray;
+      margin: 1em 0;
+      font-style: italic;
+    }
+
+    .embedded-image {
+      max-width: 100%;
+      height: auto;
+      margin: 1em 0;
+      border-radius: 4px;
+
+      &.ProseMirror-selectednode {
+        outline: 2px solid #68CEF8;
+      }
+    }
+
+    img {
+      max-width: 100%;
+
+      &.ProseMirror-selectednode {
+        outline: 2px solid #68CEF8;
+      }
+    }
+
+    h1 {
+      font-size: 2em;
+      font-weight: 700;
+      font-family: $font-playfair-display;
+      margin: 1em 0 0.5em 0;
+      line-height: 1.2;
+      color: $main-gray;
+    }
+
+    h2 {
+      font-size: 1.5em;
+      font-weight: 600;
+      font-family: $font-playfair-display;
+      margin: 1.2em 0 0.5em 0;
+      line-height: 1.3;
+      color: $main-gray;
+    }
+
+    h3 {
+      font-size: 1.25em;
+      font-weight: 600;
+      font-family: $font-playfair-display;
+      margin: 1em 0 0.5em 0;
+      line-height: 1.4;
+      color: $main-gray;
+    }
+
+    h1, h2, h3 {
+      &.ProseMirror-selectednode {
+        outline: 2px solid #68CEF8;
+      }
+    }
+  }
+}
+
+.word-count {
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  font-size: 0.85em;
+  color: $text-gray;
+  pointer-events: none;
+}
+
+.publish-button {
+  margin-top: 2em;
+  padding: 0.8em 1.2em;
+  background: $main-gray;
+  color: $white;
+  border: none;
+  font-size: 1em;
+  font-family: $font-ibm-plex-sans;
+  cursor: pointer;
+  align-self: flex-start;
+  transition: background 0.2s ease;
+
+
+  &:disabled {
+    background: $text-gray;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive Design
+@media (max-width: 1200px) {
+  .add-article-content {
+    padding: 0 8em;
+  }
+}
+
+@media (max-width: 768px) {
+  .add-article-content {
+    padding: 0 2em;
+  }
+
+  .add-article-title {
+    font-size: 2.5em;
+    margin-bottom: 0.8em;
+  }
+
+  .formatting-toolbar {
+    flex-direction: column;
+    gap: 0.8em;
+    padding: 1em;
+  }
+
+  .toolbar-left,
+  .toolbar-right {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .title-input,
+  .category-input {
+    font-size: 0.95em;
+    padding: 0.7em 1em;
+  }
+
+  .content-editor {
+    min-height: 18em;
+
+    .ProseMirror {
+      min-height: 16em;
+      padding: 0.8em;
+
+      h1 {
+        font-size: 1.8em;
+      }
+
+      h2 {
+        font-size: 1.4em;
+      }
+
+      h3 {
+        font-size: 1.2em;
+      }
+    }
+  }
+
+  .publish-button {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-article-content {
+    padding: 0 1em;
+  }
+
+  .add-article-title {
+    font-size: 2em;
+    margin-bottom: 0.6em;
+  }
+
+  .formatting-toolbar {
+    padding: 0.8em;
+  }
+
+  .formatting-toolbar button {
+    width: 1.8em;
+    height: 1.8em;
+    font-size: 0.9em;
+  }
+
+  .title-input,
+  .category-input {
+    font-size: 0.9em;
+    padding: 0.6em 0.8em;
+  }
+
+  .content-editor {
+    min-height: 15em;
+    padding: 0.8em;
+
+    .ProseMirror {
+      min-height: 13em;
+      padding: 0.6em;
+
+      h1 {
+        font-size: 1.6em;
+      }
+
+      h2 {
+        font-size: 1.3em;
+      }
+
+      h3 {
+        font-size: 1.1em;
+      }
+    }
+  }
+
+  .word-count {
+    font-size: 0.8em;
+    bottom: 0.8em;
+    right: 0.8em;
+  }
+
+  .publish-button {
+    margin-top: 1.5em;
+    padding: 0.7em 1em;
+    font-size: 0.95em;
+  }
+}

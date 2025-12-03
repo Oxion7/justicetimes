@@ -1,0 +1,72 @@
+@use 'fonts' as *;
+@use 'colors' as *;
+@use 'mixins' as *;
+
+@mixin auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin auth-content {
+  margin: 5em;
+  background: white;
+  width: 100%;
+  max-width: 26em;
+}
+
+@mixin auth-base-styles {
+  .auth-content {
+    @include auth-content;
+
+    .header-text {
+      @include header-text;
+    }
+
+    .error-message {
+      @include error-message-global;
+    }
+
+    .auth-form {
+      @include auth-form;
+
+      .form-group {
+        @include form-group;
+
+        .input {
+          @include input-base;
+        }
+
+        .input-error {
+          @include input-base;
+          @include input-error;
+        }
+
+        .error-message {
+          @include error-message-field;
+        }
+      }
+
+      .submit-button {
+        @include submit-button;
+      }
+    }
+  }
+}
+
+@mixin auth-with-names {
+  .auth-form {
+    .name-fields {
+      @include name-fields;
+    }
+  }
+}
+
+@mixin auth-with-switch {
+  .auth-form {
+    .auth-switch {
+      @include auth-switch;
+    }
+  }
+}

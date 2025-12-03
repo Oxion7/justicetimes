@@ -1,135 +1,263 @@
-import { AuthState, LoginCredentials, RegisterData } from "./types/authSlice.models";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { authAPI } from "../../api/authAPI/authAPI";
-import { Author, LoginResponse, RegisterResponse } from "../../api/authAPI/authAPI.models";
+import { LoginFormData } from "../../validation/authValidation";
+import {
+  clearAllAuthData,
+  getStoredCurrentUser,
+  getStoredToken,
+  getStoredUsers,
+  getUserByEmail,
+  isTokenExpired as checkTokenExpired,
+  saveUser,
+  setStoredCurrentUser,
+  setStoredToken,
+} from "../../utils/AuthLocalStorage";
+import { generateToken, isTokenExpired } from "../../utils/JWT";
+
+import { generateUserId } from "./utils/generateUserId";
+import { AuthState, RegisterPayload, User } from "./types/authSlice.models";
+import { STORAGE_KEYS } from "./const";
 
 const initialState: AuthState = {
-  user: null,
-  token: localStorage.getItem("token"),
-  expiresAt: localStorage.getItem("tokenExpiresAt"),
+  user: getStoredCurrentUser(),
+  token: getStoredToken(),
   isLoading: false,
   error: null,
-  currentAuthor: null,
+  isAuthenticated: !!getStoredToken() && !checkTokenExpired(),
+  users: getStoredUsers(),
 };
+const USERS_STORAGE_KEY = STORAGE_KEYS.USERS;
 
+// Async thunks
 export const registerUser = createAsyncThunk(
   "auth/register",
-  async (userData: RegisterData, { rejectWithValue }) => {
+  async (userData: RegisterPayload, { rejectWithValue }) => {
     try {
-      const response = await authAPI.register(userData);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(
-        error.responce?.data?.message || "Registration error occurred.",
+      const existingUser = getUserByEmail(userData.email);
+      if (existingUser) return rejectWithValue("User with this email already exists");
+
+      const newUser: User = {
+        id: generateUserId(),
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        password: userData.password,
+        createdAt: new Date().toISOString(),
+        description: "",
+        avatar: null,
+      };
+
+      saveUser(newUser);
+      const token = generateToken(
+        parseInt(newUser.id),
+        newUser.email,
+        `${newUser.firstName} ${newUser.lastName}`,
       );
+
+      return { user: newUser, token };
+    } catch (error) {
+      return rejectWithValue("Registration failed. Please try again.");
     }
   },
 );
+
 export const loginUser = createAsyncThunk(
-  'auth/login',
-  async (credentials: LoginCredentials, { rejectWithValue }) => {
+  "auth/login",
+  async (credentials: LoginFormData, { rejectWithValue }) => {
     try {
-      const response = await authAPI.login(credentials);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Login error occurred.');
+      const user = getUserByEmail(credentials.email);
+      if (!user) return rejectWithValue("Invalid email or password");
+
+      if (user.password !== credentials.password) return rejectWithValue("Invalid email or password");
+      const token = generateToken(
+        parseInt(user.id),
+        user.email,
+        `${user.firstName} ${user.lastName}`,
+      );
+
+      return { user, token };
+    } catch (error) {
+      return rejectWithValue("Login failed. Please try again.");
     }
-  }
+  },
 );
-export const getCurrentAuthor = createAsyncThunk(
-  'auth/getCurrentAuthor',
-  async (_, { getState, rejectWithValue }) => {
+
+export const logoutUser = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
     try {
-      const { auth } = getState() as { auth: AuthState };
-      if (!auth.token) {
-        throw new Error('No token available');
+      clearAllAuthData();
+      return;
+    } catch (error) {
+      return rejectWithValue("Logout failed");
+    }
+  },
+);
+
+// Check existing auth
+export const checkAuth = createAsyncThunk(
+  "auth/checkAuth",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = getStoredToken();
+      const user = getStoredCurrentUser();
+
+      if (!token || !user) {
+        clearAllAuthData();
+        return rejectWithValue("No valid authentication found");
       }
-      const response = await authAPI.getCurrentAuthor(auth.token);
-      return response.data;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Failed to fetch author data');
+
+      if (isTokenExpired(token)) {
+        clearAllAuthData();
+        return rejectWithValue("Session expired. Please login again.");
+      }
+
+      return { user, token };
+    } catch (error) {
+      clearAllAuthData();
+      return rejectWithValue("Authentication check failed");
     }
-  }
+  },
 );
+export const updateUserProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (userData: Partial<User>, { getState, rejectWithValue }) => {
+    try {
+      const state = getState() as { auth: AuthState };
+      const currentUser = state.auth.user;
+
+      if (!currentUser) {
+        return rejectWithValue("No user found");
+      }
+
+      const updatedUser = {
+        ...currentUser,
+        ...userData,
+      };
+
+      setStoredCurrentUser(updatedUser);
+
+      const users = getStoredUsers();
+      const userIndex = users.findIndex((user) => user.id === currentUser.id);
+      if (userIndex !== -1) {
+        users[userIndex] = updatedUser;
+        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(users));
+      }
+
+      return updatedUser;
+    } catch (error) {
+      return rejectWithValue("Failed to update profile");
+    }
+  },
+);
+
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {
-      state.user = null;
-      state.token = null;
-      state.expiresAt = null;
-      state.error = null;
-      state.currentAuthor = null;
-      localStorage.removeItem('token');
-      localStorage.removeItem('tokenExpiresAt');
-    },
     clearError: (state) => {
       state.error = null;
     },
-    setCredentials: (state, action: PayloadAction<{ token: string; expiresAt: string }>) => {
-      state.token = action.payload.token;
-      state.expiresAt = action.payload.expiresAt;
-      localStorage.setItem('token', action.payload.token);
-      localStorage.setItem('tokenExpiresAt', action.payload.expiresAt);
+    setCredentials: (
+      state,
+      { payload }: PayloadAction<{ user: User; token: string }>,
+    ) => {
+      state.user = payload.user;
+      state.token = payload.token;
+      state.isAuthenticated = true;
+      setStoredCurrentUser(payload.user);
+      setStoredToken(payload.token);
     },
   },
   extraReducers: (builder) => {
     builder
-      // Register cases
+      // Register
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action: PayloadAction<RegisterResponse>) => {
+      .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
         state.error = null;
-        // You can automatically log the user in after registration if needed
+
+        setStoredToken(action.payload.token);
+        setStoredCurrentUser(action.payload.user);
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
       })
-      // Login cases
+      // Login
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(loginUser.fulfilled, (state, action: PayloadAction<LoginResponse>) => {
+      .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.error = null;
+        state.user = action.payload.user;
         state.token = action.payload.token;
-        state.expiresAt = action.payload.expiresAt;
-        state.user = {
-          email: '',
-          name: action.payload.name,
-          authorId: action.payload.authorId,
-        };
+        state.isAuthenticated = true;
+        state.error = null;
 
-        localStorage.setItem('token', action.payload.token);
-        localStorage.setItem('tokenExpiresAt', action.payload.expiresAt);
+        setStoredToken(action.payload.token);
+        setStoredCurrentUser(action.payload.user);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
       })
-      // Get current author cases
-      .addCase(getCurrentAuthor.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(getCurrentAuthor.fulfilled, (state, action: PayloadAction<Author>) => {
+      // Logout
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
         state.isLoading = false;
-        state.currentAuthor = action.payload;
-        if (state.user) {
-          state.user.name = action.payload.name;
+        state.error = null;
+      })
+      // Check Auth
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isAuthenticated = true;
+        state.error = null;
+      })
+      .addCase(checkAuth.rejected, (state) => {
+        state.user = null;
+        state.token = null;
+        state.isAuthenticated = false;
+        state.error = null;
+      })
+      // Update User Profile
+      .addCase(updateUserProfile.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updateUserProfile.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+        state.error = null;
+
+        const userIndex = state.users.findIndex(
+          (user) => user.id === action.payload.id,
+        );
+        if (userIndex !== -1) {
+          state.users[userIndex] = action.payload;
         }
       })
-      .addCase(getCurrentAuthor.rejected, (state, action) => {
+      .addCase(updateUserProfile.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload as string;
       });
   },
 });
 
-export const { logout, clearError, setCredentials } = authSlice.actions;
+export const { clearError, setCredentials } = authSlice.actions;
 export default authSlice.reducer;

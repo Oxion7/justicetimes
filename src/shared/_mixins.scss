@@ -1,0 +1,142 @@
+@use 'fonts' as *;
+@use 'colors' as *;
+
+/* buttons */
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 2em;
+  max-height: 3em;
+  max-width: 7em;
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1;
+  text-decoration: none;
+  cursor: pointer;
+  letter-spacing: 0;
+  font-family: $font-ibm-plex-sans;
+  border: none;
+}
+
+@mixin button-solid-dark {
+  @include button-base;
+  background-color: $main-gray;
+  color: $white;
+}
+
+@mixin button-solid-light {
+  background: white;
+  @include button-base;
+  border: 1px solid $main-gray;
+}
+
+/* auth */
+@mixin auth-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin auth-content {
+  margin: 5em;
+  background: white;
+  width: 100%;
+  max-width: 26em;
+}
+
+@mixin header-text {
+  margin: 0 0 1.5em 0;
+  text-align: center;
+  font-family: $font-playfair-display;
+  font-size: 2.25em;
+  font-weight: 700;
+  color: $main-gray;
+  letter-spacing: 0;
+}
+
+@mixin error-message-global {
+  color: $error-red;
+  padding: 12px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-size: 14px;
+}
+
+@mixin auth-form {
+  margin: 1em 0;
+}
+
+@mixin form-group {
+  margin-bottom: 2em;
+  font-family: $font-ibm-plex-sans;
+}
+
+@mixin input-base {
+  margin-top: 0.75em;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid $main-gray;
+  font-size: 1em;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+}
+
+@mixin input-error {
+  border-color: $error-red;
+
+  &:focus {
+    border-color: $error-red;
+    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+  }
+}
+
+@mixin error-message-field {
+  background: none;
+  border: none;
+  color: $error-red;
+  font-size: 12px;
+  padding: 4px 0 0 0;
+  margin: 0;
+  text-align: left;
+}
+
+@mixin submit-button {
+  @include button-solid-dark;
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 1.5em;
+}
+
+@mixin auth-switch {
+  text-align: center;
+
+  p {
+    margin: 0;
+    color: $main-gray;
+    font-size: 1em;
+  }
+
+  .auth-link {
+    color: #000000;
+    text-decoration: underline solid #000000 2px;
+    font-weight: 700;
+  }
+}
+
+@mixin name-fields {
+  display: flex;
+  gap: 1em;
+
+  .form-group {
+    flex: 1;
+    margin-bottom: 2em;
+  }
+}

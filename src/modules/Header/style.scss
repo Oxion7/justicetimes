@@ -1,41 +1,8 @@
 @use '../../shared/colors' as *;
 @use '../../shared/fonts' as *;
-
-@mixin button-base {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.6rem 1.2rem;
-  font-size: 0.8rem;
-  font-weight: 500;
-  line-height: 1;
-  cursor: pointer;
-  text-transform: uppercase;
-  transition: all 0.2s ease-in-out;
-  letter-spacing: 0.5px;
-  font-family: $font-ibm-plex-sans;
-}
-
-@mixin button-solid-dark {
-  @include button-base;
-  background-color: $main-gray;
-  color: $white;
-  border: 1px solid $main-gray;
-  border-radius: 4px;
-
-  &:hover {
-    background-color: lighten($main-gray, 10%);
-    border-color: lighten($main-gray, 10%);
-  }
-
-  &.btn-lg {
-    padding: 0.8rem 1.5rem;
-    font-size: 0.85rem;
-  }
-}
+@use '../../shared/mixins' as *;
 
 .header {
-  margin-bottom: 5em;
   border-bottom: 1px solid;
   border-color: $light-gray;
 
@@ -61,51 +28,27 @@
     display: flex;
     gap: 2em;
     align-items: center;
+
   }
 
   .header-button {
     @include button-base;
-
-  }
-}
-
-// Responsive design
-@media (max-width: 768px) {
-  .header {
-    margin-bottom: 3em;
-
-    .header-container {
-      flex-direction: column;
-      gap: 1.5em;
-      padding: 1em;
+    color: $text-gray;
+    &.active {
+      color: $main-gray;
+      text-decoration: underline solid $main-gray;
+      text-underline-offset: 0.5em;
     }
-
-    .header-buttons {
-      gap: 1em;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    .header-button {
-      font-size: 0.9rem;
-      padding: 0.4em 0.8em;
-    }
-
-    .logo svg {
-      width: 120px;
+    &:hover:not(.active) {
+      color: $main-gray;
     }
   }
-}
 
-@media (max-width: 480px) {
-  .header {
-    .header-buttons {
-      gap: 0.5em;
-    }
+  .login-button {
+    @include button-solid-light;
+  }
 
-    .header-button {
-      font-size: 0.85rem;
-      padding: 0.3em 0.6em;
-    }
+  .logout-button, .signin-button {
+    @include button-solid-dark;
   }
 }
